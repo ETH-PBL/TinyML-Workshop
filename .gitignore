@@ -5,3 +5,6 @@
 *.out
 *.ps
 _minted-main
+.DS_Store
+jupyter/models/*
+jupyter/cfiles/*

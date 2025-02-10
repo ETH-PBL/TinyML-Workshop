@@ -1,0 +1,9 @@
+customtkinter
+numpy
+matplotlib
+tensorflow
+pandas
+seaborn
+pathlib
+pillow
+pyserial
