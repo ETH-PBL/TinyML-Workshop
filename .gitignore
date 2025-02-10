@@ -10,3 +10,5 @@ jupyter/models/*
 jupyter/cfiles/*
 *.o
 *.d
+*.su
+*.cyclo
