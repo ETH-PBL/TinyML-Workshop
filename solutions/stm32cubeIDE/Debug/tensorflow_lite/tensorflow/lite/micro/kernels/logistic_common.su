@@ -1,0 +1,6 @@
+/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.macos64_1.1.100.202310310803/tools/arm-none-eabi/include/c++/11.3.1/limits:525:7:static constexpr signed char std::numeric_limits<signed char>::min()	4	static
+/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.macos64_1.1.100.202310310803/tools/arm-none-eabi/include/c++/11.3.1/arm-none-eabi/thumb/v7e-m+fp/hard/bits/gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/micro_context.h:120:22:tflite::MicroContext* tflite::GetMicroContext(const TfLiteContext*)	16	static
+../tensorflow_lite/tensorflow/lite/micro/kernels/logistic_common.cc:32:14:TfLiteStatus tflite::CalculateArithmeticOpDataLogistic(TfLiteContext*, TfLiteNode*, tflite::OpDataLogistic*)	104	static
+../tensorflow_lite/tensorflow/lite/micro/kernels/logistic_common.cc:112:14:TfLiteStatus tflite::LogisticPrepare(TfLiteContext*, TfLiteNode*)	24	static
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/cppmath.h:35:1:T tflite::TfLiteRound(T) [with T = double]	16	static

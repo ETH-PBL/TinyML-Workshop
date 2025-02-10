@@ -1,0 +1,3 @@
+../Drivers/CMSIS/NN/Source/ConvolutionFunctions/arm_depthwise_conv_s16.c:43:37:depthwise_conv_s16_mult_4_s16	432	static
+../Drivers/CMSIS/NN/Source/ConvolutionFunctions/arm_depthwise_conv_s16.c:133:13:depthwise_conv_s16_generic_s16	200	static
+../Drivers/CMSIS/NN/Source/ConvolutionFunctions/arm_depthwise_conv_s16.c:244:12:arm_depthwise_conv_s16	160	static

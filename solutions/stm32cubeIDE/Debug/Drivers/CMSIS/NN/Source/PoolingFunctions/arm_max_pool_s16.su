@@ -1,0 +1,3 @@
+../Drivers/CMSIS/NN/Source/PoolingFunctions/arm_max_pool_s16.c:34:13:compare_and_replace_if_larger	72	static
+../Drivers/CMSIS/NN/Source/PoolingFunctions/arm_max_pool_s16.c:70:13:clamp_output	56	static
+../Drivers/CMSIS/NN/Source/PoolingFunctions/arm_max_pool_s16.c:113:12:arm_max_pool_s16	128	static

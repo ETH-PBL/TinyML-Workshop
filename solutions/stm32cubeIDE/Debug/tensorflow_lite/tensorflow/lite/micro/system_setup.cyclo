@@ -1,0 +1,1 @@
+../tensorflow_lite/tensorflow/lite/micro/system_setup.cc:23:6:void tflite::InitializeTarget()	1

@@ -1,0 +1,2 @@
+../Drivers/CMSIS/NN/Source/PoolingFunctions/arm_avgpool_s16.c:49:12:arm_avgpool_s16	128	static
+../Drivers/CMSIS/NN/Source/PoolingFunctions/arm_avgpool_s16.c:119:9:arm_avgpool_s16_get_buffer_size	16	static

@@ -1,0 +1,12 @@
+/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.macos64_1.1.100.202310310803/tools/arm-none-eabi/include/c++/11.3.1/limits:1676:7:static constexpr float std::numeric_limits<float>::max()	1
+/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.macos64_1.1.100.202310310803/tools/arm-none-eabi/include/c++/11.3.1/limits:1680:7:static constexpr float std::numeric_limits<float>::lowest()	1
+/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.macos64_1.1.100.202310310803/tools/arm-none-eabi/include/c++/11.3.1/arm-none-eabi/thumb/v7e-m+fp/hard/bits/gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/padding.h:32:12:int tflite::ComputePaddingWithOffset(int, int, int, int, int, int*)	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/padding.h:44:12:int tflite::ComputeOutSize(TfLitePadding, int, int, int, int)	4
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/padding.h:62:28:TfLitePaddingValues tflite::ComputePaddingHeightWidth(int, int, int, int, int, int, int, int, TfLitePadding, int*, int*)	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/micro_context.h:120:22:tflite::MicroContext* tflite::GetMicroContext(const TfLiteContext*)	1
+../tensorflow_lite/tensorflow/lite/micro/kernels/conv_common.cc:41:12:tflite::ConvParams tflite::ConvParamsFloat(const TfLiteConvParams&, const tflite::OpDataConv&)	1
+../tensorflow_lite/tensorflow/lite/micro/kernels/conv_common.cc:58:12:tflite::ConvParams tflite::ConvParamsQuantized(const TfLiteConvParams&, const tflite::OpDataConv&)	1
+../tensorflow_lite/tensorflow/lite/micro/kernels/conv_common.cc:78:14:TfLiteStatus tflite::CalculateOpDataConv(TfLiteContext*, TfLiteNode*, const TfLiteConvParams&, int, int, int, int, int, int, TfLiteType, tflite::OpDataConv*)	9
+../tensorflow_lite/tensorflow/lite/micro/kernels/conv_common.cc:135:14:TfLiteStatus tflite::ConvPrepare(TfLiteContext*, TfLiteNode*)	10
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/kernel_util.h:274:6:void tflite::CalculateActivationRange(TfLiteFusedActivation, T*, T*) [with T = float]	4

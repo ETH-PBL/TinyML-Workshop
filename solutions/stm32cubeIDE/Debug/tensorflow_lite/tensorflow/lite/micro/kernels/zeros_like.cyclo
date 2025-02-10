@@ -1,0 +1,21 @@
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:56:3:tflite::RuntimeShape::~RuntimeShape()	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:58:11:int32_t tflite::RuntimeShape::DimensionsCount() const	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:59:11:int32_t tflite::RuntimeShape::Dims(int) const	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:75:18:const int32_t* tflite::RuntimeShape::DimsData() const	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:86:7:int tflite::RuntimeShape::FlatSize() const	2
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/types.h:312:12:int tflite::MatchingFlatSize(const tflite::RuntimeShape&, const tflite::RuntimeShape&)	2
+/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.macos64_1.1.100.202310310803/tools/arm-none-eabi/include/c++/11.3.1/arm-none-eabi/thumb/v7e-m+fp/hard/bits/gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/kernel_util.h:155:12:int tflite::NumInputs(const TfLiteNode*)	2
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/kernel_util.h:158:12:int tflite::NumOutputs(const TfLiteNode*)	2
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/micro_context.h:120:22:tflite::MicroContext* tflite::GetMicroContext(const TfLiteContext*)	1
+../tensorflow_lite/tensorflow/lite/micro/kernels/zeros_like.cc:27:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	5
+../tensorflow_lite/tensorflow/lite/micro/kernels/zeros_like.cc:52:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	5
+../tensorflow_lite/tensorflow/lite/micro/kernels/zeros_like.cc:83:20:TfLiteRegistration tflite::Register_ZEROS_LIKE()	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/kernels/kernel_util.h:65:4:T* tflite::micro::GetTensorData(TfLiteEvalTensor*) [with T = long long int]	1
+../tensorflow_lite/tensorflow/lite/micro/kernels/zeros_like.cc:46:6:void tflite::{anonymous}::resetZeros(T*, int) [with T = long long int]	2
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/kernels/kernel_util.h:65:4:T* tflite::micro::GetTensorData(TfLiteEvalTensor*) [with T = long int]	1
+../tensorflow_lite/tensorflow/lite/micro/kernels/zeros_like.cc:46:6:void tflite::{anonymous}::resetZeros(T*, int) [with T = long int]	2
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/kernels/kernel_util.h:65:4:T* tflite::micro::GetTensorData(TfLiteEvalTensor*) [with T = signed char]	1
+../tensorflow_lite/tensorflow/lite/micro/kernels/zeros_like.cc:46:6:void tflite::{anonymous}::resetZeros(T*, int) [with T = signed char]	2
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/kernels/kernel_util.h:65:4:T* tflite::micro::GetTensorData(TfLiteEvalTensor*) [with T = float]	1
+../tensorflow_lite/tensorflow/lite/micro/kernels/zeros_like.cc:46:6:void tflite::{anonymous}::resetZeros(T*, int) [with T = float]	2

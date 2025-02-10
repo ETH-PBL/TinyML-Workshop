@@ -1,0 +1,1 @@
+../Drivers/CMSIS/DSP/Source/TransformFunctions/arm_mfcc_q31.c:86:12:arm_mfcc_q31	112	static,ignoring_inline_asm

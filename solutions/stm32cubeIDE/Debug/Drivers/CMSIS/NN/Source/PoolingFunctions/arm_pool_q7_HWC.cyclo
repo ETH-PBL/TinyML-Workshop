@@ -1,0 +1,5 @@
+../Drivers/CMSIS/NN/Source/PoolingFunctions/arm_pool_q7_HWC.c:42:13:buffer_scale_back_q15_to_q7	2
+../Drivers/CMSIS/NN/Source/PoolingFunctions/arm_pool_q7_HWC.c:52:13:compare_and_replace_if_larger_q7	8
+../Drivers/CMSIS/NN/Source/PoolingFunctions/arm_pool_q7_HWC.c:96:13:accumulate_q7_to_q15	4
+../Drivers/CMSIS/NN/Source/PoolingFunctions/arm_pool_q7_HWC.c:170:6:arm_maxpool_q7_HWC	10
+../Drivers/CMSIS/NN/Source/PoolingFunctions/arm_pool_q7_HWC.c:326:6:arm_avepool_q7_HWC	10

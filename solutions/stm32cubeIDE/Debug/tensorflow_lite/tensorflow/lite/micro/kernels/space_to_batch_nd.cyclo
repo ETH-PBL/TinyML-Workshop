@@ -1,0 +1,26 @@
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/third_party/ruy/ruy/profiler/instrumentation.h:195:3:ruy::profiler::ScopeLabel::~ScopeLabel()	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:39:3:tflite::RuntimeShape::RuntimeShape(int, int32_t)	2
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:56:3:tflite::RuntimeShape::~RuntimeShape()	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:58:11:int32_t tflite::RuntimeShape::DimensionsCount() const	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:59:11:int32_t tflite::RuntimeShape::Dims(int) const	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:64:8:void tflite::RuntimeShape::SetDim(int, int32_t)	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:75:18:const int32_t* tflite::RuntimeShape::DimsData() const	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/runtime_shape.h:123:12:int tflite::Offset(const tflite::RuntimeShape&, int, int, int, int)	13
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/reference/space_to_batch_nd.h:28:21:tflite::RuntimeShape tflite::reference_ops::ExtendShapeSpaceToBatch(const tflite::RuntimeShape&)	2
+/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.macos64_1.1.100.202310310803/tools/arm-none-eabi/include/c++/11.3.1/arm-none-eabi/thumb/v7e-m+fp/hard/bits/gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/kernel_util.h:150:12:int tflite::NumDimensions(const TfLiteTensor*)	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/kernel_util.h:155:12:int tflite::NumInputs(const TfLiteNode*)	2
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/kernel_util.h:158:12:int tflite::NumOutputs(const TfLiteNode*)	2
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/micro_context.h:120:22:tflite::MicroContext* tflite::GetMicroContext(const TfLiteContext*)	1
+../tensorflow_lite/tensorflow/lite/micro/kernels/space_to_batch_nd.cc:41:7:void* tflite::{anonymous}::Init(TfLiteContext*, const char*, size_t)	1
+../tensorflow_lite/tensorflow/lite/micro/kernels/space_to_batch_nd.cc:46:14:TfLiteStatus tflite::{anonymous}::Prepare(TfLiteContext*, TfLiteNode*)	10
+../tensorflow_lite/tensorflow/lite/micro/kernels/space_to_batch_nd.cc:69:14:TfLiteStatus tflite::{anonymous}::Eval(TfLiteContext*, TfLiteNode*)	3
+../tensorflow_lite/tensorflow/lite/micro/kernels/space_to_batch_nd.cc:116:20:TfLiteRegistration tflite::Register_SPACE_TO_BATCH_ND()	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/kernels/kernel_util.h:72:10:const T* tflite::micro::GetTensorData(const TfLiteEvalTensor*) [with T = float]	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/kernels/kernel_util.h:72:10:const T* tflite::micro::GetTensorData(const TfLiteEvalTensor*) [with T = long int]	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/kernels/kernel_util.h:65:4:T* tflite::micro::GetTensorData(TfLiteEvalTensor*) [with T = float]	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/reference/space_to_batch_nd.h:40:13:void tflite::reference_ops::SpaceToBatchND(const tflite::SpaceToBatchParams&, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, const int32_t*, const tflite::RuntimeShape&, const int32_t*, const tflite::RuntimeShape&, T*) [with T = float]	10
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/kernels/kernel_util.h:72:10:const T* tflite::micro::GetTensorData(const TfLiteEvalTensor*) [with T = signed char]	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/micro/kernels/kernel_util.h:65:4:T* tflite::micro::GetTensorData(TfLiteEvalTensor*) [with T = signed char]	1
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/tensorflow/lite/kernels/internal/reference/space_to_batch_nd.h:40:13:void tflite::reference_ops::SpaceToBatchND(const tflite::SpaceToBatchParams&, const tflite::RuntimeShape&, const T*, const tflite::RuntimeShape&, const int32_t*, const tflite::RuntimeShape&, const int32_t*, const tflite::RuntimeShape&, T*) [with T = signed char]	10
+/Users/mgiordano/Downloads/arm_workshop/solutions/stm32cubeIDE/tensorflow_lite/third_party/ruy/ruy/profiler/instrumentation.h:191:12:) [with Args = {const char*}]	1

@@ -8,3 +8,5 @@ _minted-main
 .DS_Store
 jupyter/models/*
 jupyter/cfiles/*
+*.o
+*.d

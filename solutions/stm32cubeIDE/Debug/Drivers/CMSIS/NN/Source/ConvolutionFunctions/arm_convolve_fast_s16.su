@@ -1,0 +1,2 @@
+../Drivers/CMSIS/NN/Source/ConvolutionFunctions/arm_convolve_fast_s16.c:51:12:arm_convolve_fast_s16	528	static,ignoring_inline_asm
+../Drivers/CMSIS/NN/Source/ConvolutionFunctions/arm_convolve_fast_s16.c:228:9:arm_convolve_fast_s16_get_buffer_size	16	static
