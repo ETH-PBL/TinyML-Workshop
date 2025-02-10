@@ -1,0 +1,7 @@
+*.aux
+*.dvi
+*.glsdefs
+*.log
+*.out
+*.ps
+_minted-main

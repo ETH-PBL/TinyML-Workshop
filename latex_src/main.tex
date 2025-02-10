@@ -1,0 +1,479 @@
+\documentclass[parskip=half,notes,cadrem,toolver]{iisvlsi}
+%
+%
+%
+% Package loading required for *this* document.
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage{textcomp}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage{dirtree}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings} 
+\usepackage[acronym]{glossaries}
+\usepackage{datetime}
+\usepackage{minted}
+\usepackage{textgreek}
+\usepackage[toc]{appendix}
+\usepackage{tabto}
+
+\begin{document}
+
+\newacronym{mcu}{MCU}{Microcontroller}
+\newacronym{gpio}{GPIO}{General Purpose Input/Output}
+\newacronym{uart}{UART}{Universal Asynchronous Receiver Transmitter}
+\newacronym{cmsis}{CMSIS}{Cortex Microcontroller Software Interface Standard}
+\newacronym{dsp}{DSP}{Digital Signal Processor}
+\newacronym{ide}{IDE}{Integrated Development Environment}
+\newacronym{rtos}{RTOS}{Real-Time Operating System}
+\newacronym{hal}{HAL}{Hardware Abstraction Layer}
+\newacronym{fft}{FFT}{Fast Fourier Transformation}
+\newacronym{dct}{DCT}{Discrete Cosine Transform}
+\newacronym{simd}{SIMD}{Single Instruction Multiple Data}
+\newacronym{mac}{MAC}{Multiply-Accumulate}
+\newacronym{pdm}{PDM}{Pulse-Density Modulation}
+\newacronym{dfsdm}{DFSDM}{Digital Filter for Sigma-Delta Modulator}
+\newacronym{mnist}{MNIST}{Modified National Institute of Standards and Technology}
+\newacronym{gcc}{GCC}{GNU Compiler Collection}
+\newacronym{gui}{GUI}{Graphical User Interface}
+\newacronym[plural=FLOPs,firstplural=Floating Point Operations (FLOPs)]{flop}{FLOP}{Floating Point Operation}
+%
+%
+%
+% Titlepage settings.
+\exdesc{Hands-On Workshop}
+\extitle{Real-time on-device image classification on microcontrollers}
+\lecturer{Michele Magno, PhD}
+\course{}
+\coursenr{}
+\docvers{}
+\lastchange{}
+% \newdate{date}{\today}
+% \date{\displaydate{date}}
+%
+%
+%
+
+
+%
+% Do not change the following line, because it is used in order to derive SVN-specific information from the present file.
+\svnidlong
+{$HeadURL: svn://iis-svn.ee.ethz.ch/mbgh/docs/latex/classes/iisvlsi/iisvlsi_sample.tex $}
+{$LastChangedDate: 2012-02-23 13:48:26 +0100 (Thu, 23 Feb 2012) $}
+{$LastChangedRevision: 56 $}
+{$LastChangedBy: mbgh $}
+\svnid{$Id: iisvlsi_sample.tex 56 2012-02-23 12:48:26Z mbgh $}
+%
+%
+% Generate the title page with the previously defined settings.
+\maketitle
+%
+
+
+%\printglossaries
+%
+\section{Introduction}
+
+In this exercise, you will learn how to use the \textit{TFLite} toolchain to execute TensorFlow Lite models on different \gls{mcu} targets. We will use the \texttt{B-L475E-IOT01A2} board and perform real-time inference on the \gls{mcu}. This is done using a simple \textit{Python} script that establishes a \gls{uart} connection to the \gls{mcu}, sends the input data, and receives the classification result after inference. The data transfer will be done in a static fashion, meaning we will store the data locally and load it into the \gls{mcu} from a \textit{.npy}-array file. However, for your projects, you could also use the onboard sensors or other inputs, such as your laptop camera, and transmit the data using a serial port to the \gls{mcu}. To prepare you for your final assignment, we will follow a bottom-up approach to creating a new project that will enable real-time inference on your target architecture.
+
+\section{Notation}
+
+\begin{studtask*}[]
+Parts of the exercise that require you to complete a task will be explained in a shaded box like this.
+\end{studtask*}
+\begin{note*}
+You find notes and remarks in boxes like this one.
+\end{note*}
+
+\section{Preparation}
+
+We will use the \stmcubeide which you are already familiar with in order to port the \textit{TFLite} model on your microcontroller.
+
+It is likely that you will encounter error messages such as \texttt{ModuleNotFoundError: No module named 'XYZ'}. This means that the underlying package that implements the module \textit{XYZ} is not yet installed in your current environment. This is different from the error \texttt{undefined reference to XYZ}, which is addressed later in this document.
+
+\newpage
+
+\subsection*{Starting a new project}
+
+In the following, we will create a new \texttt{STM32 Project} using the \stmcubeide. \autoref{fig:new_proj} shows how to start the creation of a new project. 
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=\linewidth]{new_figures/new_project.png}
+        \caption{Creating a new \texttt{STM32 Project} \stmcubeide project from scratch for image classification on the MCU.}
+        \label{fig:new_proj}
+    \end{center}
+\end{figure}
+
+After pressing the \texttt{STM32 Project} button, a \texttt{Target Selection} window opens. Switch to the \texttt{Board Selector} view. Under \texttt{Commercial Part Number}, enter the part number of our MCU (\texttt{B-L475E-IOT01A2}). \autoref{fig:board_selector} shows the window after entering the correct part number. Proceed by clicking \texttt{Next}.
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=\linewidth]{new_figures/board_selector.png}
+        \caption{\texttt{Board Selector} in the \stmcubeide with the required configuration for our MCU.}
+        \label{fig:board_selector}
+    \end{center}
+\end{figure}
+
+\subsection*{Configuring UART Communication}
+
+The board includes several peripheral devices such as digital microphones, several communication antennae, and other I/O. In this exercise, you will configure the \gls{gpio} pins for communication via \gls{uart} and profile software implementations with \stmcubeide.
+
+For communication with the microcontroller, we suggest using \term or \texttt{screen}. However, if you are already experienced with UART communication, feel free to use any serial terminal software you like.
+
+\stmcube provides support for advanced drivers and libraries such as Cube AI and software stacks for Bluetooth or Wi-Fi communication. These software components have to be selected in the \menu{.ioc file} \submenu{Software Packs} \submenu{Manage Software Packs} menu.
+
+
+\begin{studtask}
+    \begin{enumerate}
+        \item Create a new project with \stmcubeide. Make sure to give the project an appropriate name. Furthermore, you have to configure the project as a \texttt{C++} project as shown in \autoref{fig:proj}. Select \texttt{No} when prompted to initialize the peripherals in default mode, as shown in \autoref{fig:periph}.
+        \item Configure the USART1 module by navigating to \menu{Connectivity}\submenu{USART1}. Choose the mode to be "Asynchronous" (making it UART1), baud rate \SI{115200}{Bits/s}, word length \SI{8}{Bits}, no parity bits, and 1 stop bit. Leave all other settings as they are.
+        \item Make sure the pins PB7, PB6 and PB5 are assigned to RX, TX and CK respectively, as shown in \autoref{fig:UART}. Make sure to clear the pinout assignments beforehand (\autoref{fig:pinout}). 
+        \item Save the project to generate the files.
+        \item Check the files generated in the \menu{Core} folder of the project. Do you see the different files generated for the peripherals?
+        \item In order to generate a clean \texttt{main.c} file, it is recommended to generate separate source and header files for the peripherals and main file. This can be done via the \textit{Project Manager}, as shown in \autoref{fig:pm}.
+    \end{enumerate}
+\end{studtask}
+
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=0.5\linewidth]{figures/image-classification.png}
+        \caption{Creating a new \texttt{C++} \stmcubeide project from scratch for image classification on the MCU.}
+        \label{fig:proj}
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=0.5\linewidth]{new_figures/peripherals.png}
+        \caption{Peripheral prompt window.}
+        \label{fig:periph}
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=\linewidth]{new_figures/pinouts.png}
+        \caption{Clear Pinout Assignements.}
+        \label{fig:pinout}
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=0.9\linewidth]{new_figures/UART.png}
+        \caption{Setting up the UART1 on the MCU.}
+        \label{fig:UART}
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=\linewidth]{figures/proj_manager.png}
+        \caption{Project Manager configuration for separating the peripherals and main function.}
+        \label{fig:pm}
+    \end{center}
+\end{figure}
+
+
+
+\subsection*{Printing output with UART}
+
+C as a language is designed to be portable between many hardware platforms. The standard library \textit{stdio} is designed to implement input and output functions. 
+
+\begin{studtask}
+    In the Project created in the previous task, add an include directive for stdio.h in the main file. Make sure you write your own code in the specified regions!
+\end{studtask}
+
+To port this standard library to any platform and hardware interface, we need to implement one function to read a single character from a stream and one function to write a single character to a stream. We can then use the well-known \textit{stdio} functions like \texttt{printf}. The functions needed are \texttt{\_\_io\_putchar} and \texttt{\_\_io\_getchar}.
+
+For this exercise, we would like to transfer data from the microcontroller to a computer with the \textit{USART1} interface. We therefore use the \gls{hal} functions \\ \texttt{HAL\_UART\_Transmit} and \texttt{HAL\_UART\_Receive}.
+
+\begin{studtask}
+    \begin{enumerate}
+        \item Add a function definition for \texttt{\_write} to write to the output stream in the appropriate code section of the main file.
+        \item Add a \texttt{printf} statement to the main function body to announce the beginning of the inference; this will furthermore test the serial communication.
+    \end{enumerate}
+\end{studtask}
+
+\begin{note*}
+"Make sure you write your own code in the specified regions" 
+Maybe put a code snippet to highlight the region
+\begin{minted}{C}
+/* Private user code ------------------------------/
+/ USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
+\end{minted}
+\end{note*}
+
+\begin{minted}{C}
+    __attribute__((weak)) int _write(int file, char* ptr, int len)
+    {
+      HAL_UART_Transmit(&hUART1, (uint8_t*)ptr, len, HAL_MAX_DELAY);
+      return len;
+    }
+\end{minted}
+
+\subsection*{Compiling and flashing a project}
+
+The project can be compiled by \textit{simply clicking the } \button{Build} \textit{button} as shown in \autoref{fig:STMCUBEIDEBuild}. 
+
+However, this is not entirely true as you have to be very careful when starting your own exploration. We will give you a basic intuition of what can go wrong and how to fix it. In \autoref{fig:comp}, a general compilation flow is shown. We start with a simple \texttt{C} program. \texttt{C} is a \textit{compiled language}, i.e. a compiler is needed to translate source code to machine-readable code. One of the most famous ones is the \gls{gcc}, which is also used in the \stmcubeide. Compilers translate source code in four steps: 1) Preprocessing, 2) Compiling, 3) Assembling, and 4) Linking. If you want to read up on the different steps you can refer to this \href{https://medium.com/@bdov_/what-happens-when-you-type-gcc-main-c-a4454564e96d#:~:text=The%20C%20programming%20language%20is,compiler%20for%20the%20C%20language.}{blog post}. 
+
+We will focus mainly on the \textbf{Linking} part, as this is usually where things go wrong. The \textbf{Assembler} goes through all the files in your \texttt{C/C++} project and generates so-called \textit{object code (binary)}. This is essentially pure machine code, which runs on your target architecture. However, since we have multiple files in our project such as header files, or external libraries, we need the \textbf{Linker} to combine everything into a single \textit{executable}. As the name suggests, this file contains the code which is in the end run on the \gls{mcu} to perform the inference. 
+
+However, the \textbf{Linker} needs some help when using libraries and external files such as \textit{CMSIS} or \textit{TFLite}. Both tools contain a hierarchy of definitions and macros. \href{https://gcc.gnu.org/onlinedocs/cpp/Macros.html#Macros}{Macros} are essentially function definitions used across several source files. These definitions are usually all listed in so-called \href{https://gcc.gnu.org/onlinedocs/cpp/Header-Files.html#:~:text=A%20header%20file%20is%20a,preprocessing%20directive%20'%20%23include%20'.}{header files}. You request the use of a header file in your program by \textit{including} it, with the C preprocessing directive \texttt{\#include}. Thus, you can access the macros within the \textit{included} header file.  
+
+In order for a project to successfully compile, we have to tell the \textbf{Linker} the order of macro definitions. Otherwise, it will try to link functions that have not yet been defined. If you encounter error messages during building such \texttt{undefined reference to XYZ}, it is probably due to the misordering of the paths within your project. You can check the order of the search paths under \menu{Properties}\submenu{Paths and Symbols}\submenu{Paths and Symbols}\submenu{Includes}. Make sure you select "Add to all configurations" and "Add to all languages" checkboxes while adding.
+
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=\linewidth]{figures/STMCUBEIDEBuild.jpg}
+        \caption[The Build and Debug icons in the Toolbar.]{The Build and Debug icons in the Toolbar.}
+        \label{fig:STMCUBEIDEBuild}
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=0.5\linewidth]{figures/mlonmcu_compile.png}
+        \caption[General compilation flow.]{General compilation flow.}
+        \label{fig:comp}
+    \end{center}
+\end{figure}
+
+\begin{studtask}[Project preparation]
+    \begin{enumerate}
+        \item Extract the exercise materials. 
+        \item Include the CMSIS (\textit{delete the folder automatically generated by the IDE}) and TFLite \\ toolchains that you just downloaded in your new project. 
+        \item Make sure that your search paths for compilation and linking are set up correctly. 
+        \item Under \menu{Core}\submenu{Inc} add a new folder called \texttt{models}. This is where we will store the TFLite model header files for the inference step on the \gls{mcu}. 
+    \end{enumerate}
+\end{studtask}
+
+\begin{note*}
+    When adding the includes, do this through the IDE's file browser. Also check that you have a Symbol \texttt{CMSIS\_NN} and make sure to add \texttt{tensorflow\_lite} as a source location in the \texttt{Paths and Symbols} section of the Project properties.
+\end{note*}
+
+\begin{note*}
+In this exercise, we have provided the \textit{CMSIS} and \textit{TFLite} toolchains for you. If you want to update the toolchains for your own projects, you can find both \href{https://github.com/ARM-software/CMSIS_5}{CMSIS} and \href{https://github.com/tensorflow/tflite-micro}{TFLite} on GitHub. It is usually good to check these repositories from time to time as more and more kernels are added to these toolchains, which could improve your performance and accuracy significantly. 
+\end{note*}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figures/include_directories.png}
+    \caption{Include directories}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\section{Preparing the Inference step on the MCU}
+
+In the exercise materials we provide you with a \texttt{Jupyter notebook} to convert a trained \textit{Keras} model via \textit{TFlite} to a \textit{C header file}. The header file contains all the network parameter information used for \textit{inference}. We will start with a very simple dataset, i.e. the Fashion MNIST dataset, and a straightforward network implementation.
+
+\begin{studtask}
+    \begin{enumerate}
+        \item Open the \texttt{Jupyter notebook} file \texttt{lab7.ipynb} with the editor of your choice and follow the instructions. We will start with \textbf{Task 1}. 
+        \item What is the loss and accuracy that you can achieve on the test set? 
+        \begin{itemize}
+            \item Loss: \answerrule
+            \item Accuracy: \answerrule
+        \end{itemize}
+        \item Briefly explain the difference between the test and validation set. 
+        \begin{itemize}
+            \item Validation set: \answerrule
+            \item Test set: \answerrule
+        \end{itemize}
+        \item What is the size of the \texttt{.h5} model and the \texttt{.tflite} model? By how much can we reduce the model size?
+        \begin{itemize}
+            \item Size of the \texttt{.h5} file: \answerrule
+            \item Size of the \texttt{.tflite} file: \answerrule
+            \item Compression factor: \answerrule \\
+        \end{itemize}
+    \end{enumerate}
+    \answerrule
+\end{studtask}
+
+Now you have successfully converted your \textit{Keras} model to a \textit{TFLite} model for the \gls{mcu}. 
+
+\section{Deploying the network to the MCU for inference}
+
+Deploying the network effectively means storing the network's parameters (e.g., weights and biases), usually in the~\gls{mcu}'s read-only memory, as well as generating the C code implementing the network's computational graph, managing intermediate buffer memory and calling (optimized) kernel implementations of individual layers. Therefore, the first prerequisite for a successful deployment is ensuring that the network's size, given the number of parameters and their precision, is smaller than the available storage space. 
+
+\begin{studtask}
+\begin{enumerate}
+    \item Move on to \textbf{Task 2} in the \texttt{Jupyter Notebook}.
+    \item Count the model parameters, considering the weights and biases within each layer. Verify your results by comparing them with the output of the \texttt{summary()\footnote{Note that similar functionality is covered in PyTorch by the \texttt{torchsummary} library.}} method. \newline
+    \_\answerrule \\
+    \_\answerrule \\
+    \item By how much can you reduce the model size by performing full 8-bit quantization? \\
+    \_\answerrule \\
+    \_\answerrule \\
+    \item What accuracy can we achieve with the fully quantized model? Why do you think the quantized model might achieve higher accuracy than the full precision model? \\
+    \_\answerrule \\
+    \_\answerrule \\
+\end{enumerate}
+
+\end{studtask}
+
+Another hardware-associated constraint that must be addressed when deploying a model on an \gls{mcu} is represented by the memory limitations. These limitations refer to the available read-write memory used for the intermediate buffers; in the absence of tiling and multi-buffered memory accesses, the memory requirements of a network can be defined as:
+
+\begin{equation}
+M = \max_{l \in L}{l_{in} + l_{out} + l_{p}}
+\end{equation}
+
+, where $l_{in}$ represent the input activations of a layer $l$ of a network comprised of $L$ layers, $l_{out}$ represent the output activations, whilst $l_{p}$ are the layer's parameters. Similarly to the storage requirements, the memory limitations also depend on the precision used to represent the data.
+
+\begin{studtask}
+\begin{enumerate}
+    \item What are the memory requirements of your network? Do they fit the constraints of your target platform?  \\
+    \_\answerrule
+    \_\answerrule
+\end{enumerate}
+\end{studtask}
+
+In the next step, we have to include the trained network in our project and deploy it on the \gls{mcu}. 
+
+\begin{studtask}
+    \begin{enumerate}
+    \item In the exercise material we provide you the application source code and header file to run the inference on the \gls{mcu}. Add the \texttt{.h} and \texttt{.cpp} file at the right locations to your project.
+    \item Surround the inference call (running the inference step) with a \textit{CycleCounter} to benchmark the number of cycles taken for an inference step. You can find the code for this step later in the document.
+    \item Add the model \texttt{.h} file at the correct location to your project that you generated from the \texttt{Jupyter notebook}. Make sure you include the model in your application. 
+    \item Now you can compile and flash your project.
+    \item Once you verify that the build is successful and the application is started, the \texttt{printf} statement from the main function body, announcing the inference step, can be commented out.
+    \end{enumerate}
+\end{studtask}
+
+Here you can find the code to count the cycles of a function on your MCU.
+
+\textbf{Define:}
+\begin{minted}{C}
+    /* DWT (Data Watchpoint and Trace) registers, 
+    only exists on ARM Cortex with a DWT unit */
+#define KIN1_DWT_CONTROL             (*((volatile uint32_t*)0xE0001000))
+  /*!< DWT Control register */
+#define KIN1_DWT_CYCCNTENA_BIT       (1UL<<0)
+  /*!< CYCCNTENA bit in DWT_CONTROL register */
+#define KIN1_DWT_CYCCNT              (*((volatile uint32_t*)0xE0001004))
+  /*!< DWT Cycle Counter register */
+#define KIN1_DEMCR                   (*((volatile uint32_t*)0xE000EDFC))
+  /*!< DEMCR: Debug Exception and Monitor Control Register */
+#define KIN1_TRCENA_BIT              (1UL<<24)
+  /*!< Trace enable bit in DEMCR register */
+
+#define KIN1_InitCycleCounter() \
+  KIN1_DEMCR |= KIN1_TRCENA_BIT
+  /*!< TRCENA: Enable trace and debug block DEMCR 
+  (Debug Exception and Monitor Control Register */
+
+#define KIN1_ResetCycleCounter() \
+  KIN1_DWT_CYCCNT = 0
+  /*!< Reset cycle counter */
+
+#define KIN1_EnableCycleCounter() \
+  KIN1_DWT_CONTROL |= KIN1_DWT_CYCCNTENA_BIT
+  /*!< Enable cycle counter */
+
+#define KIN1_DisableCycleCounter() \
+  KIN1_DWT_CONTROL &= ~KIN1_DWT_CYCCNTENA_BIT
+  /*!< Disable cycle counter */
+
+#define KIN1_GetCycleCounter() \
+  KIN1_DWT_CYCCNT
+  /*!< Read cycle counter register */
+\end{minted}
+
+\textbf{C Code:}
+\begin{minted}{C}
+uint32_t cycles; /* number of cycles */
+
+KIN1_InitCycleCounter(); /* enable DWT hardware */
+KIN1_ResetCycleCounter(); /* reset cycle counter */
+KIN1_EnableCycleCounter(); /* start counting */
+foo(); /* call function and count cycles */
+cycles = KIN1_GetCycleCounter(); /* get cycle counter */
+KIN1_DisableCycleCounter(); /* disable counting if not used any more */
+\end{minted}
+
+\begin{note*}
+Our real-time inference script in the next tasks reads the bytes directly from the serial stream. Make sure that you do not have any \texttt{printf} statements such as e.g. from the \textit{CycleCounter} in your code that contaminate the stream.
+\end{note*}
+
+
+\section{Real-time inference on the MCU}
+
+Finally, we can perform the inference on the \gls{mcu}. For this purpose, we provide you with a small \gls{gui}, which is programmed in the \texttt{test.py} script provided in the exercise materials. In \autoref{fig:inference}, the general working principle of the test script is shown. We send the test image data together with its label to the \gls{mcu}. After one inference step we read out the \gls{uart} port to retrieve the predicted label. 
+
+In order to achieve real-time operation for our system, our model's latency (i.e., the interval between the model receiving the input and said model producing the prediction) has to be smaller than the data acquisition time, the latter being emulated here using the \texttt{test.py} script. The inference latency can thus be considered a third hardware-associated constraint, further determining the energy consumption (i.e., $E = P \cdot t$) of our system. Although the number of \glspl{flop} might represent a sufficiently good proxy for the latency when comparing different networks with a similar architecture, optimizations such as the usage of \gls{simd}-based kernels, tiling, or double buffering could make the \glspl{flop}-based comparison obsolete. It is thus recommended, when optimizing a neural network considering an accuracy-latency trade-off, to perform hardware-in-the-loop optimizations by measuring the network's latency on the target platform.
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{figures/inference (1).png}
+        \caption[Real-time Inference step on the MCU.]{Real-time Inference step on the MCU.}
+        \label{fig:inference}
+    \end{center}
+\end{figure}
+
+\begin{studtask}
+    \label{task:inference}
+    \begin{enumerate}
+    \item Open the \texttt{Anaconda Prompt} shell and navigate to the location of your \texttt{inference.py} script. Make sure your environment is activated. 
+    \item Check out the source code of the \texttt{inference.py} script and try to understand how it works. 
+    \item To perform the inference run the following command: \texttt{python inference.py}.
+    \textit{Attention:} You might have to modify the script slightly with your COM port.
+    \\For UNIX users, change the port in the script to the path you use for the UART connection i.e. \texttt{/dev/ttyACM0}
+    \item What is the latency and memory usage of your network? 
+    \_\answerrule \\
+    \_\answerrule \\
+    \end{enumerate}
+\end{studtask}
+
+
+\eoe{Congratulations! You have reached the end of the exercise. \\
+If you are unsure of your results, discuss them with an assistant.}
+
+
+\section{Solutions}
+
+In case you did not finish the tasks in time, the hand-out you were given also presents the solutions.
+
+To import a project in STM32CubeIDE you have to follow the following steps:
+\begin{itemize}
+    \item Click on file and Import
+    \begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=0.5\linewidth]{figures/import1.png}
+    \end{center}
+\end{figure}
+
+    \item Select "Existing objects into the workspace"
+
+    \begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=0.5\linewidth]{figures/import2.png}
+    \end{center}
+\end{figure}
+
+
+    \item Check "Select Archive file and browse to the right location and continue to import the project.
+
+    \begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=0.5\linewidth]{figures/import3.jpg}
+    \end{center}
+\end{figure}
+
+
+\end{itemize}
+
+
+
+\end{document}
